@@ -9,27 +9,42 @@
 */
 int main(int ac, char **av)
 {
-	char *str;
-	size_t buffsize = 1024;
+  int i;
+  char **str;
+  size_t buffsize = 1024;
 	char *buffer = malloc(buffsize * sizeof(char));
 	int size;
-	if (buffer == NULL)
-{
-perror("Error");
-exit (1);
-}
+	if (buffer ==NULL)
+	  {
+	    perror("Error");
+	    exit (1);
+	  }
 while (!feof(stdin))
 {
 printf("$ ");
-size = getline(&buffer, &buffsize, stdin);
-str = strtok(buffer, " ");
-printf("characters: %d\n", size);
-
-while (str != NULL)
-{
-printf("%s\n", str);
-str = strtok(0, " ");
+getline(&buffer, &buffsize, stdin);
+ str = malloc(buffsize * sizeof(char *));
+if (str == NULL)
+  {
+    perror("ERROR");
+		     exit (1);
+		     }
+   int count = 0;
+ char *token = strtok(buffer, " ");
+ while (token != NULL)
+   {
+     str[count] = malloc(strlen(token) + 1);
+     strcpy(str[count], token);
+     count++;
+     token = strtok(NULL, " ");
+   }
+ for (i = 0; i < count; i++)
+   {
+     printf("%s\n", str[i]);
+   }
+ for (i = 0; i < count; i++)
+   free(str[i]);
 }
-}
-return (0);
+ free(buffer);
+   return (0);
 }
