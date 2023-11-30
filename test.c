@@ -13,7 +13,8 @@
 */
 int main(int ac, char **av)
 {
-  char *path;
+  pid_t child_pid;
+    char *path;
   int i;
   char **str;
   size_t buffsize = 1024;
@@ -23,6 +24,7 @@ int main(int ac, char **av)
 	int count;
 	char *token;
 	char *dir;
+	char *full_path;
 	if (buffer ==NULL)
 	  {
 	    perror("Error");
@@ -68,6 +70,8 @@ if (str == NULL)
      if (cmp[i] != NULL)
        {
 	 printf("%s\n", cmp[i]);
+       }
+   }
 	 if (strcmp(cmp[i], str[0]) == 0)
 	   {
 	     child_pid = fork();
@@ -79,25 +83,22 @@ if (str == NULL)
 		     perror("FAIL");
 		     exit(1);
 		   }
+		 else
+		   {
 		 strcpy(full_path, cmp[i]);
 		 strcat(full_path, "/");
 		 strcat(full_path, str[0]);
-	       execve(full_path, cmp, NULL);
+	         execve(full_path, cmp, NULL);
+	       }
 	       }
 	     perror("FAIL");
 	     exit(1);
 	   }
 	 else
 	   {
-	     wait(NULL);
+	     perror("Fix it");
 	   }
 	 break;
-       }
-   }
  }
- for (i = 0; i < count; i++)
-   free(str[i]);
-}
- free(buffer);
    return (0);
 }
