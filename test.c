@@ -1,9 +1,11 @@
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "shell.h"
 #define MAX_DIRS 100
 /**
 *
@@ -13,7 +15,6 @@
 */
 int main(int ac, char **av)
 {
-  pid_t child_pid;
     char *path;
   int i;
   char **str;
@@ -39,7 +40,7 @@ if (str == NULL)
   {
     perror("ERROR");
 		     exit (1);
-		     }
+  }
   count = 0;
  token = strtok(buffer, " ");
  while (token != NULL)
@@ -65,40 +66,47 @@ if (str == NULL)
      i++;
      dir = strtok(NULL, ":");
    }
- for (i = 0; i < MAX_DIRS; i++)
+ for (i = 0; i < 6; i++)
    {
-     if (cmp[i] != NULL)
-       {
 	 printf("%s\n", cmp[i]);
-       }
-   }
-	 if (strcmp(cmp[i], str[0]) == 0)
-	   {
-	     child_pid = fork();
-	     if (child_pid == 0)
-	       {
 		 full_path = malloc(strlen(cmp[i]) + strlen(str[0]) + 2);
 		 if (full_path == NULL)
 		   {
 		     perror("FAIL");
 		     exit(1);
 		   }
-		 else
+		 if (full_path = find_file(str[0], cmp[i]))
 		   {
 		 strcpy(full_path, cmp[i]);
 		 strcat(full_path, "/");
 		 strcat(full_path, str[0]);
-	         execve(full_path, cmp, NULL);
-	       }
-	       }
-	     perror("FAIL");
+		 printf("%s", full_path);
+		 if (execve(full_path, cmp, NULL) == -1);
+		 {
+		   perror("FAIL");
 	     exit(1);
+	       }
 	   }
 	 else
 	   {
-	     perror("Fix it");
+	     printf("NOT YET\n");
 	   }
-	 break;
+   }
+ printf("Finished\n");
  }
+for (i = 0; i < MAX_DIRS; i++)
+   {
+     free(cmp[i]);
+   }
+ free(cmp);
+
+ for (i = 0; i < count; i++)
+   {
+     free(str[i]);
+   }
+ free(str);
+
+ free(full_path);
+free(buffer);
    return (0);
 }
