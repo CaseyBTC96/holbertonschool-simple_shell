@@ -8,7 +8,7 @@
 *
 *
 */
-char* find_file(const char *pattern, const char *directoryPath)
+char* find_file(char *pattern, char *directoryPath)
 {
   DIR *dr = opendir(directoryPath);
 

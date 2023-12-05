@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "shell.h"
 #define MAX_DIRS 100
 /**
 *
@@ -68,14 +69,14 @@ if (str == NULL)
  for (i = 0; i < 6; i++)
    {
 	 printf("%s\n", cmp[i]);
-	 if (strcmp(cmp[i], str[0]) == 0)
-	   {
 		 full_path = malloc(strlen(cmp[i]) + strlen(str[0]) + 2);
 		 if (full_path == NULL)
 		   {
 		     perror("FAIL");
 		     exit(1);
 		   }
+		 if (full_path = find_file(str[0], cmp[i]))
+		   {
 		 strcpy(full_path, cmp[i]);
 		 strcat(full_path, "/");
 		 strcat(full_path, str[0]);
