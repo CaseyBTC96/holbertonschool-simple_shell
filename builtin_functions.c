@@ -1,3 +1,5 @@
+#include "shell.h"
+
 /**
  * change_directory - Change Directory
  * @args: Array of tokens
