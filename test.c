@@ -75,22 +75,16 @@ if (str == NULL)
 		     perror("FAIL");
 		     exit(1);
 		   }
-		 if (full_path = find_file(str[0], cmp[i]))
-		   {
-		 strcpy(full_path, cmp[i]);
-		 strcat(full_path, "/");
-		 strcat(full_path, str[0]);
-		 printf("%s", full_path);
+		 printf("%s, %s", str[0] cmp[i]);
+		 full_path = find_file(str[0], cmp[i]);
 		 if (execve(full_path, cmp, NULL) == -1);
 		 {
 		   perror("FAIL");
 	     exit(1);
 	       }
-	   }
-	 else
-	   {
-	     printf("NOT YET\n");
-	   }
+	 
+	   
+		 printf("%s", full_path);
    }
  printf("Finished\n");
  }
