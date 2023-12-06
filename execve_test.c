@@ -7,7 +7,8 @@
 
 int main(void)
 {
-	size_t buffsize = 1024;
+  int i, j;
+  size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
 
 	if (buffer == NULL)
@@ -37,49 +38,72 @@ int main(void)
 			count++;
 			token = strtok(NULL, " \n");
 		}
-		args[count] = NULL;
-
-		//Print the tokenized command
-		for (int i = 0; i < count; i++)
-		{
-			printf("%s\n", args[i]);
-		}
-
-		//Execute the command
-		pid_t  pid = fork();
-
-		if (pid == -1)
-		{
-			perror("Fork failed");
+		printf("INPUT:\n");
+		for (i = 0; i < count; i++)
+		  {
+		    printf("%s\n", args[i]);
+		    pid_t pid = fork();
+		    if (pid < 0)
+		      {
+			perror("Fork Failed");
 			exit(1);
-		}
-
-		if (pid == 0)
-		{
-			//Child Process
-			char *argv[] = {"/bin/ls", "-l", "/usr/", NULL};
-
-			printf("Before execve\n");
-
-			if (execve(argv[0], argv, NULL) == -1)
-			{
-			perror("Execution failed");
-			exit(1);
-			}
-		}
+		      }
+		    else if (pid == 0)
+		      {
+		char* path = getenv("PATH");
+		printf("%s\n", path);
+		char **new = (char **)malloc(buffsize * sizeof(char *));
+		if (new == NULL)
+		  {
+		    perror ("Error");
+		    exit(1);
+		  }
+		int path_count = 0;
+		token = strtok(path, ":");
+		while (token != NULL)
+		  {
+		    new[path_count] = strdup(token);
+		    path_count++;
+		    token = strtok(NULL, ":");
+		  }
+		printf("NEW PATH:\n");
+		for (i = 0; i < path_count; i++)
+		  {
+		    printf("%s\n", new[i]);
+		    char file_path[1024];
+		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
+		if (access(file_path, F_OK) != -1)
+		  printf("File %s exists!\n", file_path);
 		else
-		{
-		//parent process
-		wait(NULL);
-		}
-
+		  {
+		    printf("File Does not exist or cannot be accessed");
+		  }
+		  }
 	//free allocated memory
-		for (int i =  0; i < count; i++)
-		{
-			free(args[i]);
-		}
+		for (i = 0; i < path_count; i++)
+		  {
+		    free(new[i]);
+		  }
+		free(new);
+		exit(0);
+		      }
+		    else
+		      {
+			int status;
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+			  {
+			    fprintf(stderr, "Child process failed with exit code %d\n", WEXITSTATUS(status));
+			    exit(1);
+			  }
+		      }
 	}
-
+		for (i = 0; i < count; i++)
+		  {
+		    free(args[i]);
+		  }
+		free(args);
+	}
 	free(buffer);
 	return 0;
 }
