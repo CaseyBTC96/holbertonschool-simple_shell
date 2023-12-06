@@ -38,6 +38,68 @@ int _execute(char *filename, char *const argv, char *const envp[])
 		     return (-1);
 	}
 }
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int main(void)
+{
+        size_t buffsize = 1024;
+        char *buffer = (char *)malloc(buffsize * sizeof(char));
+
+        if (buffer == NULL)
+        {
+                perror("Error");
+                exit (1);
+        }
+
+        while (!feof(stdin))
+        {
+                printf(" $ ");
+                getline(&buffer, &buffsize, stdin);
+
+                //tokenize the input command                                                                                                                                                   
+                char **args = (char **)malloc(buffsize * sizeof(char *));
+                if (args == NULL)
+                {
+                        perror("Error");
+                        exit(1);
+                }
+
+                int count = 0;
+                char *token = strtok(buffer, " \n");
+                while (token != NULL)
+                {
+                        args[count] = strdup(token);
+                        count++;
+                        token = strtok(NULL, " \n");
+                }
+                char* path = getenv("PATH");
+                printf("%s\n", path);
+                char **new[] = {};
+                //Print the tokenized command                                                                                                                                                  
+                for (int i = 0; i < count; i++)
+                {
+                  printf("%s\n", args[i]);
+                }
+        //free allocated memory                                                                                                                                                                
+                for (int i =  0; i < count; i++)
+                {
+                        free(args[i]);
+                }
+        }
+
+        free(buffer);
+        return 0;
+}
+
+
+
+
+
 			      
 /**
  * _execute_builtins - Choose from an array of builtin functions

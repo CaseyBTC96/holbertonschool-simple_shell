@@ -74,6 +74,7 @@ int main(void)
 		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
 		  printf("File %s exists!\n", file_path);
+		_execute(filepath, args[1], path);
 		else
 		  {
 		    printf("File Does not exist or cannot be accessed");
