@@ -1,0 +1,15 @@
+#include "shell.h"
+/**
+*
+*
+*
+*
+*/
+void free_array(char *array, int count)
+{
+int i;
+for (i = 0; i < count; i++)
+{
+free(array[i]);
+}
+free(array)
