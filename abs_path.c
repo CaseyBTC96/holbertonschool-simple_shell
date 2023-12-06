@@ -21,13 +21,3 @@ char *abs_path(char *path, char *file)
   strcat(print, file);
   return (print);
 }
-int main(void)
-{
-  char path[] = "/some/path";
-  char file[] = "example.txt";
-
-  char *result = abs_path(path, file);
-  printf("Absolute Path: %s\n", result);
-  free(result);
-  return (0);
-}
