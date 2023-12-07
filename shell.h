@@ -13,6 +13,6 @@ typedef struct choose_builtin
 } choose_builtins_t;
 
 /* built in functions */
-int _env(char **args, char *input_stdin, int *exit_status);
+void _env(void);
 int _execute(char *file, char *const args[], char *const env[]);
 #endif 
