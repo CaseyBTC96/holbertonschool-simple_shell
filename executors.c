@@ -39,5 +39,6 @@ int _execute(char *file, char *const args[], char *const env[])
 		    else
 		     return (-1);
 	}
+	return (1);
 }
 	

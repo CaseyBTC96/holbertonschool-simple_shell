@@ -23,8 +23,6 @@ int main(void)
 	{
 		printf(" $ ");
 		getline(&buffer, &buffsize, stdin);
-
-		//tokenize the input command
 		char **args = (char **)malloc(buffsize * sizeof(char *));
 		if (args == NULL)
 		{
@@ -99,7 +97,6 @@ int main(void)
 		    printf("File Does not exist or cannot be accessed");
 		 }
 		  }
-	//free allocated memory
 		for (i = 0; i < path_count; i++)
 		  {
 		    free(new[i]);
