@@ -100,6 +100,8 @@ int main(void)
 		   continue;
 		 }
 		      }
+		    if (result = 1)
+		      break;
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
