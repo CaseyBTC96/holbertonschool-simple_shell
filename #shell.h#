@@ -1,11 +1,8 @@
 #ifndef main_h
 #define main_h
+void free_array(char *array);
 /**
- * struct choose_builtin - Builtin commands struct
- * @name_builin: Name of builtin command
- * @func_builtin: Pointer to builtin command functions
- */
-typedef struct choose_builtin
+ typedef struct choose_builtin
 {
         char *name_builtin;
         int (*func_builtin)(char **, char *, int *);
