@@ -13,6 +13,12 @@ int main(void)
 	char **new;
 	int path_count;
 	char *path;
+	char **args;
+	int count;
+	char *token;
+	  pid_t pid;
+	  char file_path;
+	  int status;
 	if (buffer == NULL)
 	{
 		perror("Error");
@@ -23,15 +29,15 @@ int main(void)
 	{
 		printf(" $ ");
 		getline(&buffer, &buffsize, stdin);
-		char **args = (char **)malloc(buffsize * sizeof(char *));
+		args = (char **)malloc(buffsize * sizeof(char *));
 		if (args == NULL)
 		{
 			perror("Error");
 			exit(1);
 		}
 
-		int count = 0;
-		char *token = strtok(buffer, " \n");
+		count = 0;
+		token = strtok(buffer, " \n");
 		while (token != NULL)
 		{
 			args[count] = strdup(token);
@@ -57,7 +63,7 @@ int main(void)
 		      {
 			printf("%s\n", args[i]);
 		      }
-		    pid_t pid = fork();
+		    pid = fork();
 		    if (pid < 0)
 		      {
 			perror("Fork Failed");
@@ -85,7 +91,7 @@ int main(void)
 		for (i = 0; i < path_count; i++)
 		  {
 		    printf("%s\n", new[i]);
-		    char file_path[1024];
+		    file_path[1024];
 		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
 		  {
@@ -106,7 +112,6 @@ int main(void)
 		      }
 		    else
 		      {
-			int status;
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 			  {
