@@ -74,9 +74,9 @@ int main(void)
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
-		    if ((result = _execute(args[0], args, new)))
+		    if (access(args[0], F_OK) != -1)
 		      {
-			break;
+			_execute(args[0], args, new);
 		      }
 		    else
 		      {
