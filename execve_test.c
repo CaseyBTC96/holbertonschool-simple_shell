@@ -7,7 +7,7 @@
 #include "shell.h"
 int main(void)
 {
-  int result;
+  int result = 0;
   int i;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
@@ -76,6 +76,7 @@ int main(void)
 		  {
 		    if (access(args[0], F_OK) != -1)
 		      {
+			result = 1;
 			_execute(args[0], args, new);
 		      }
 		    else
