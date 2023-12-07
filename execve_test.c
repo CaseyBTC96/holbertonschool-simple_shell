@@ -74,7 +74,7 @@ int main(void)
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
-		    if (access(args[0], F_OK) != -1)
+		    if (access(args[0], X_OK) != -1)
 		      {
 			result = 1;
 			_execute(args[0], args, new);
@@ -82,7 +82,7 @@ int main(void)
 		    else
 		      {
 			snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
-		if (access(file_path, F_OK) != -1)
+		if (access(file_path, X_OK) != -1)
 		  {
 		_execute(file_path, args, new);
 		  }
