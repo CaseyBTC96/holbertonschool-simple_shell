@@ -83,7 +83,14 @@ int main(void)
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
-		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
+		    if (_execute(args[0], args, new) == 1)
+		      {
+			perror("Error");
+			       exit(1);
+		      }
+		    else
+		      {
+			snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
 		  {
 		_execute(file_path, args, new);
@@ -92,6 +99,7 @@ int main(void)
 	         {
 		   continue;
 		 }
+		      }
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
