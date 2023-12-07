@@ -90,7 +90,7 @@ int main(void)
 		  }
 		else
 	         {
-		   return;
+		   continue;
 		 }
 		  }
 		for (i = 0; i < path_count; i++)
