@@ -66,9 +66,6 @@ int _execute_builtins(char **args, char *input_stdin, char **argv, int *exit_sat
 	choose_builtins_t  options[] = {
 		{"exit", _exit},
 		{"env", _env},
-		{"cd", _cd},
-		{"setenv", _setenv},
-		{"unsetenv", _unsetenv},
 		{NULL, NULL}
 	};
 

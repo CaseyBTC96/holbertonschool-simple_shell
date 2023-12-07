@@ -16,10 +16,7 @@ typedef struct choose_builtin
 } choose_builtins_t;
 
 /* built in functions */
-int change_directory(char **args, char *input_stdin, int *exit_status);
-int _setenv(char **args, char *input_stdin, int *exit_status);
-int _unsetenv(char **args, char *input_stdin, int *exit_status);
-int _env(char **args, char *input_stdin, int *exit_status);
+int _env(char  **args, char *input_stdin, int *exit_status)
 int _exit(char **args, *input_stdin, int *exit_status);
 
 #endif 
