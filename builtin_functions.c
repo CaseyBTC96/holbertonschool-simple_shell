@@ -1,6 +1,6 @@
 #include "shell.h"
 #include <stdlib.h>
-#incldue <stdio.h>
+#include <stdio.h>
 /**
  * _env - Function that print environment
  * @args: arguments
