@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include "shell.h"
 int main(void)
 {
   int i, j;
@@ -14,7 +14,7 @@ int main(void)
 	if (buffer == NULL)
 	{
 		perror("Error");
-		exit (1);
+		exit(1);
 	}
 
 	while (!feof(stdin))
@@ -73,9 +73,12 @@ int main(void)
 		    char file_path[1024];
 		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
-		  printf("File %s exists!\n", file_path);
-		else
 		  {
+		    printf("File %s exists!\n", file_path);
+		_execute(file_path, args, new);
+		  }
+		else
+	         {
 		    printf("File Does not exist or cannot be accessed");
 		  }
 		  }

@@ -20,6 +20,5 @@ int change_directory(char **args, char *input_stdin, int *exit_status);
 int _setenv(char **args, char *input_stdin, int *exit_status);
 int _unsetenv(char **args, char *input_stdin, int *exit_status);
 int _env(char **args, char *input_stdin, int *exit_status);
-int _exit(char **args, *input_stdin, int *exit_status);
-
+int _execute(char *file, char *const args[], char *const env[]);
 #endif 
