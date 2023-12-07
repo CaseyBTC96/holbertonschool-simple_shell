@@ -84,7 +84,7 @@ int main(void)
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
-		    if (result = _execute(args[0], args, new))
+		    if ((result = _execute(args[0], args, new)))
 		      {
 			break;
 		      }
