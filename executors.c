@@ -14,10 +14,11 @@ int _execute(char *file, char *const args[], char *const env[])
 {
   pid_t pid = fork(); /* create a duplicate process (child) */
 	int status;
+	int result;
 	if (pid == 0) /* child process */
 	{
 		/* execute a completley new program instead of the child */
-		if (execve(file, args, env) == -1)
+		if (result = execve(file, args, env) == -1)
 		{
 			perror("execve fail");
 			/* free (new_arguments) */
@@ -39,6 +40,6 @@ int _execute(char *file, char *const args[], char *const env[])
 		    else
 		     return (-1);
 	}
-	return (1);
+	return (result);
 }
 	
