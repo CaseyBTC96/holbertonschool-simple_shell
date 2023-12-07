@@ -10,14 +10,14 @@ int main(void)
   int i;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
-	char **new;
+	char new[][256] = {"", "", "", ""};
 	int path_count;
 	char *path;
-	char **args;
+	char args[][256] = {"", "", "", ""};
 	int count;
 	char *token;
 	  pid_t pid;
-	  char file_path;
+	  char file_path[1024];
 	  int status;
 	if (buffer == NULL)
 	{
@@ -91,7 +91,6 @@ int main(void)
 		for (i = 0; i < path_count; i++)
 		  {
 		    printf("%s\n", new[i]);
-		    file_path[1024];
 		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
 		  {
