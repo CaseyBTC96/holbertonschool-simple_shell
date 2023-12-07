@@ -44,7 +44,6 @@ int main(void)
 			count++;
 			token = strtok(NULL, " \n");
 		}
-		printf("INPUT:\n");
 		if (strcmp(args[0], "env") == 0)
 		  _env();
 		else if (strcmp(args[0], "exit") == 0)
@@ -59,10 +58,6 @@ int main(void)
 		  }
 		else
 		  {
-		    for (i = 0; i < count; i++)
-		      {
-			printf("%s\n", args[i]);
-		      }
 		    pid = fork();
 		    if (pid < 0)
 		      {
@@ -72,7 +67,6 @@ int main(void)
 		    else if (pid == 0)
 		      {
 		path = getenv("PATH");
-		printf("%s\n", path);
 		new = (char **)malloc(buffsize * sizeof(char *));
 		if (new == NULL)
 		  {
@@ -87,19 +81,16 @@ int main(void)
 		    path_count++;
 		    token = strtok(NULL, ":");
 		  }
-		printf("NEW PATH:\n");
 		for (i = 0; i < path_count; i++)
 		  {
-		    printf("%s\n", new[i]);
 		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
 		if (access(file_path, F_OK) != -1)
 		  {
-		    printf("File %s exists!\n", file_path);
 		_execute(file_path, args, new);
 		  }
 		else
 	         {
-		    printf("File Does not exist or cannot be accessed");
+		   return;
 		 }
 		  }
 		for (i = 0; i < path_count; i++)
