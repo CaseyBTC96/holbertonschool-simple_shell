@@ -10,10 +10,10 @@ int main(void)
   int i;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
-	char new[][256] = {"", "", "", ""};
+	char **new;
 	int path_count;
 	char *path;
-	char args[][256] = {"", "", "", ""};
+	char **args;
 	int count;
 	char *token;
 	  pid_t pid;
