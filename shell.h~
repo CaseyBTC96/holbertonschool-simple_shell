@@ -1,4 +1,0 @@
-#ifndef main_h
-#define main_h
-int find_file(const char *pattern, DIR *dr);
-#endif 
