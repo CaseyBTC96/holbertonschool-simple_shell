@@ -18,7 +18,7 @@ int _execute(char *file, char *const args[], char *const env[])
 	if (pid == 0) /* child process */
 	{
 		/* execute a completley new program instead of the child */
-		if (result = execve(file, args, env) == -1)
+	  if ((result = execve(file, args, env)) == -1)
 		{
 			perror("execve fail");
 			/* free (new_arguments) */
