@@ -94,21 +94,19 @@ int main(void)
 		      break;
 		  }
 		  }
-	}
 		for (i = 0; i < path_count; i++)
 		  {
 		    free(new[i]);
 		  }
 		free(new);
 		exit(0);
-		      }
-	}
+
 		for (i = 0; i < count; i++)
 		  {
 		    free(args[i]);
 		  }
 		free(args);
-}
+	}
 	free(buffer);
 return (0);
 }
