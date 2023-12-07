@@ -83,10 +83,9 @@ int main(void)
 		  }
 		for (i = 0; i < path_count; i++)
 		  {
-		    if (_execute(args[0], args, new) == 1)
+		    if (result = _execute(args[0], args, new))
 		      {
-			perror("Error");
-			       exit(1);
+			break;
 		      }
 		    else
 		      {
