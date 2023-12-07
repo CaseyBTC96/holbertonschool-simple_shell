@@ -17,9 +17,7 @@ int main(void)
 	char **args;
 	int count;
 	char *token;
-	  pid_t pid;
 	  char file_path[1024];
-	  int status;
 	if (buffer == NULL)
 	{
 		perror("Error");
@@ -95,6 +93,8 @@ int main(void)
 		    if (result == 1)
 		      break;
 		  }
+		  }
+	}
 		for (i = 0; i < path_count; i++)
 		  {
 		    free(new[i]);
