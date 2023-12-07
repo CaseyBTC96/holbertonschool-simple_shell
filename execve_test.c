@@ -59,14 +59,6 @@ int main(void)
 		  }
 		else
 		  {
-		    pid = fork();
-		    if (pid < 0)
-		      {
-			perror("Fork Failed");
-			exit(1);
-		      }
-		    else if (pid == 0)
-		      {
 		path = getenv("PATH");
 		new = (char **)malloc(buffsize * sizeof(char *));
 		if (new == NULL)
@@ -119,7 +111,7 @@ int main(void)
 			    exit(1);
 			  }
 		      }
-		  }
+	}
 		for (i = 0; i < count; i++)
 		  {
 		    free(args[i]);
