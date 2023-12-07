@@ -7,10 +7,12 @@
 #include "shell.h"
 int main(void)
 {
-  int i, j;
+  int i;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
-
+	char **new;
+	int path_count;
+	char *path;
 	if (buffer == NULL)
 	{
 		perror("Error");
@@ -39,9 +41,24 @@ int main(void)
 			token = strtok(NULL, " \n");
 		}
 		printf("INPUT:\n");
-		for (i = 0; i < count; i++)
+		if (strcmp(args[0], "env") == 0)
+		  _env();
+		else if (strcmp(args[0], "exit") == 0)
 		  {
-		    printf("%s\n", args[i]);
+		    for (i = 0; i < count; i++)
+		      {
+			free(args[i]);
+		      }
+		    free(buffer);
+		    free(args);
+		  exit(0);
+		  }
+		else
+		  {
+		    for (i = 0; i < count; i++)
+		      {
+			printf("%s\n", args[i]);
+		      }
 		    pid_t pid = fork();
 		    if (pid < 0)
 		      {
@@ -50,15 +67,15 @@ int main(void)
 		      }
 		    else if (pid == 0)
 		      {
-		char* path = getenv("PATH");
+		path = getenv("PATH");
 		printf("%s\n", path);
-		char **new = (char **)malloc(buffsize * sizeof(char *));
+		new = (char **)malloc(buffsize * sizeof(char *));
 		if (new == NULL)
 		  {
 		    perror ("Error");
 		    exit(1);
 		  }
-		int path_count = 0;
+		path_count = 0;
 		token = strtok(path, ":");
 		while (token != NULL)
 		  {
@@ -80,7 +97,7 @@ int main(void)
 		else
 	         {
 		    printf("File Does not exist or cannot be accessed");
-		  }
+		 }
 		  }
 	//free allocated memory
 		for (i = 0; i < path_count; i++)
@@ -100,13 +117,13 @@ int main(void)
 			    exit(1);
 			  }
 		      }
-	}
+		  }
 		for (i = 0; i < count; i++)
 		  {
 		    free(args[i]);
 		  }
 		free(args);
-	}
+}
 	free(buffer);
-	return 0;
+return (0);
 }
