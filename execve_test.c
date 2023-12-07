@@ -102,15 +102,6 @@ int main(void)
 		free(new);
 		exit(0);
 		      }
-		    else
-		      {
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			  {
-			    fprintf(stderr, "Child process failed with exit code %d\n", WEXITSTATUS(status));
-			    exit(1);
-			  }
-		      }
 	}
 		for (i = 0; i < count; i++)
 		  {
