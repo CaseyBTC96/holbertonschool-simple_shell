@@ -1,117 +1,6 @@
 #include "shell.h"
-
-/**
- * change_directory - Change Directory
- * @args: Array of tokens
- * @input_stdin: Input from stdin
- * @exit_status: Exit status
- * Return: 1 (success)
- */
-int change_directory(char  **args, char *input_stdin, int *exit_status)
-{
-	int stat; /* to check chdir() return value */
-	char s[128]; /* size of string s */
-
-	/* get the current working directory, and save it in s */
-	getcwd(s, sizeof(s));
-
-	(void)input_stdin;
-	(void)exit_status;
-
-	/*we recieve cd without any other argument */
-	if (args[1] == NULL)
-		/* change to home directory */
-		stat = chdir(getenv("HOME"));
-	/* we recieve cd - */
-	else if (strcmp(args[1], "-") == 0)
-		/* change to previous directory */
-		stat = chdir(getenv("OLDPWD"));
-	/* we recieve cd ~ */
-	else if (strcmp(args[1], "~") == 0)
-		/* change to home directory */
-		stat = chdir(getenv("HOME"));
-	else /*change to any path given (absolute or relative) */
-		stat = chdir(args[1]);
-
-	/* check if any chdir() syscall had an error */
-	if (stat == -1)
-		perror("cd had an error");
-
-	/* add the variable OLDPWD to the environemnt with the value of s */
-	/* 1 --> if OLDPWD already exists its value is changed to s (overwrite) */
-	setenv("OLDPWD", s, 1);
-	/* ...with the value get from getcwd() */
-	/* ...is changed to the value get from getcwd() */
-	setenv("PWD", getcwd(s, sizeof(s)), 1);
-	return (1);
-}
-
-/**
- * _setenv - change or add an environemnt variable
- * @args: Array of tokens from input
- * @input_stdin: input from stdin
- * @exit_status: Exit status
- * Return: Return 1 if use a function, 0 otherwise.
- */
-int _setenv(char **args, char *input_stdin, int *exit_status)
-{
-	int n_tokens = 0; /* to counnt how many tokens we recieve */
-	
-	(void)input_stdin;
-	(void)exit_status;
-
-	/* get the number of tokens */
-	while (args[n_tokens] != NULL)
-	{
-		n_tokens++;
-	}
-
-	/* when we have 3 tokens */
-	if (n_tokens == 3)
-		/**
-		 * now we are working with the array of tokens -> args[0] is setenv,
-		 * add the variable args[1] to the environment with the value of args[2],
-		 * 1 --> if args[1] already exists its value is changed to args[2] (overwrite)
-		 */
-		setenv(args[1], args[2], 1);
-
-	/* check if we recieve a number of tokens different than 3 */
-	else if (n_tokens != 3)
-		fprintf(stderr, "Try use \"setenv [KEY] [VALUE]\"\n");
-	return (1);
-}
-
-/**
- * _unsetenv - Delete an environment variable from the environment
- * @args: Array of tokens from input
- * @input_stdin: Input from stdin
- * @exit_status: Exit status
- * Return: Return 1 if use a function, 0 otherwise.
- */
-int _unsetenv(char **args, char *input_stdin, int *exit_status)
-{
-	int n_tokens = 0; /* to count how many tokens we recieve */
-
-	(void)input_stdin;
-	(void)exit_status;
-
-	/* get the number of tokens */
-	while (args[n_tokens] != NULL)
-	{
-		 n_tokens++;
-	}
-
-	/* when we have 2 tokens */
-	if (n_tokens == 2)
-		/* delete the variable arrgs[1] from the environment */
-		unsetenv(args[1]);
-	/* check if we recieve a number of tokens different than 2 */
-	else if (n_tokens != 2)
-		fprintf(stderr, "Try use \"unsetenv [KEY]\"n");
-
-	return (1);
-}
-
+#include <stdlib.h>
+#incldue <stdio.h>
 /**
  * _env - Function that print environment
  * @args: arguments
@@ -159,7 +48,7 @@ int _exit(char **argss, char *input_stdin, int *exit_status)
 		free(input_stdin);
 		exit(*exit_status);
 	}
-	if (ags [2] 1= NULL)
+	if (ags[2] != NULL)
 	{
 		fprintf(stderr, "exit: too many arguments\n");
 		return (0);
