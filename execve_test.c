@@ -7,6 +7,7 @@
 #include "shell.h"
 int main(void)
 {
+  int result;
   int i;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
