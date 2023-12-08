@@ -8,15 +8,15 @@
 int main(void)
 {
   int result = 0;
-  int i;
+  int i, j;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
-	char **new;
+	char **new = NULL;
 	int path_count;
-	char *path;
-	char **args;
+	char *path = NULL;
+	char **args = NULL;
 	int count;
-	char *token;
+	char *token = NULL;
 	  char file_path[1024];
 	  pid_t pid;
 	  int status;
@@ -26,21 +26,30 @@ int main(void)
 		exit(1);
 	}
 
-	while (!feof(stdin))
+	  while (1)
 	{
 	  printf("$ ");
-	  getline(&buffer, &buffsize, stdin);
-		args = (char **)malloc(buffsize * sizeof(char *));
-		if (args == NULL)
-		{
-			perror("Error");
-			exit(1);
-		}
-
+	  fflush(stdout);
+	  if (fgets(buffer, buffsize, stdin) == NULL)
+	    {
+	      break;
+	    }
+	  size_t len = strlen(buffer);
+	  if (len > 0 && buffer[len - 1] == '\n')
+	    {
+	      buffer[len - 1] = '\0';
+	    }
 		count = 0;
 		token = strtok(buffer, " \n");
+		result = 0;
 		while (token != NULL)
 		{
+		  args = realloc(args, (count + 1) * sizeof(char *));
+		  if  (args == NULL)
+		    {
+		      perror("Error");
+		      exit(EXIT_FAILURE);
+		    }
 			args[count] = strdup(token);
 			count++;
 			token = strtok(NULL, " \n");
@@ -68,46 +77,56 @@ int main(void)
 		  }
 		path_count = 0;
 		token = strtok(path, ":");
+		result = 0;
 		while (token != NULL)
 		  {
 		    new[path_count] = strdup(token);
 		    path_count++;
 		    token = strtok(NULL, ":");
 		  }
-		for (i = 0; i < path_count; i++)
-		  {
 		    if (access(args[0], X_OK) != -1)
 		      {
-			pid = fork();
-			if (pid == 0)
-			  {
-			    result = 1;
-			execve(args[0], args, new);
-			  }
-			if (pid < 0)
-			  {
-			perror("Error");
-			exit(1);
+			result = 1;
+			printf("File found\n");
 		      }
-			else
+		    else
+		      {
+			memset(file_path, '\0', sizeof(file_path));
+			for (j = 0; j < path_count; j++)
 			  {
-			    waitpid(-1, &status, 0);
-			    if (WIFEXITED(status))
-			      return (WEXITSTATUS(status));
-			    else
-			      return (-1);
+			snprintf(file_path, sizeof(file_path), "%s/%s", new[j], args[0]);
+			if (access(file_path, X_OK) != -1)
+			  {
+			    result = 2;
+			    printf("File found\n");
+			    break;
+			  }
 			  }
 		      }
-			snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
-		if (access(file_path, X_OK) != -1)
+		if (result > 0)
 		  {
 		    pid = fork();
 		    if (pid == 0)
 		      {
-			result = 1;
-		execve(file_path, args, new);
-		  }
-		    else if (pid < 0)
+		    if (result == 1)
+		      {
+			if (execve(args[0], args, new) == -1)
+			{
+			  perror("File unaccessible");
+			  exit(EXIT_FAILURE);
+			}
+		      }
+		    else if (result == 2)
+		      {
+			if (execve(file_path, args, new) == -1)
+			  {
+			    perror("File unaccessible");
+			    exit(EXIT_FAILURE);
+			  }
+		    exit(EXIT_SUCCESS);
+		      }
+		      }
+		    if (pid < 0)
 		      {
 		    perror("Error");
 		    exit(1);
@@ -117,27 +136,28 @@ int main(void)
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
 			  {
-			  return (WEXITSTATUS(status));
+			    continue;
 			  }
 			else
 			  {
-			  return (-1);
+			    perror("Child process terminated abnormally");
+			    return (-1);
 			  }
 		      }
+		      }
+		if (result == 0)
+		  {
+		    continue;
 		  }
-		   continue;
-		 
-		    if (result == 1)
-		      break;
-		  
+	   
 		  }
-		  }
+	
 		for (i = 0; i < path_count; i++)
 		  {
 		    free(new[i]);
 		  }
 		free(new);
-		exit(0);
+		
 
 		for (i = 0; i < count; i++)
 		  {
@@ -146,5 +166,6 @@ int main(void)
 		free(args);
 	}
 	free(buffer);
-return (0);
+	exit(0);
+	return (0);
 }
