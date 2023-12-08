@@ -12,10 +12,6 @@
  */
 int _execute(char *file, char *const args[], char *const env[])
 {
-  pid_t pid = fork(); /* create a duplicate process (child) */
-	int status;
-	if (pid == 0) /* child process */
-	{
 		/* execute a completley new program instead of the child */
 	  if (execve(file, args, env) == -1)
 		{
@@ -24,20 +20,9 @@ int _execute(char *file, char *const args[], char *const env[])
 			exit(EXIT_FAILURE);
 		}
 	}
-	else if (pid < 0)  /* check if fork fails */
+	else if (pid < 0)  /* check if fork
 	{
-		perror("Error forking");
-		return (-1);
-	}
-	else /* parent process */
-	{
-		/* this is equivalent to wait(&status) */
-		waitpid(pid, &status, 0);
-		/* check if the child terminated normally */
-		if (WIFEXITED(status))
-		  return (WEXITSTATUS(status));
-		    else
-		     return (-1);
+	  
 	}
 	return (1);
 }
