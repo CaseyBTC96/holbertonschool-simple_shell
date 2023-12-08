@@ -26,8 +26,8 @@ int main(void)
 
 	while (!feof(stdin))
 	{
-		printf(" $ ");
-		getline(&buffer, &buffsize, stdin);
+	  printf("$ ");
+	  getline(&buffer, &buffsize, stdin);
 		args = (char **)malloc(buffsize * sizeof(char *));
 		if (args == NULL)
 		{
