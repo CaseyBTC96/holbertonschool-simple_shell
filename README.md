@@ -58,7 +58,7 @@ compile it with the following command:
 $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
 ...
 
-## Authos
+## Authors
 
 | Casey Paul | github.com/caseyBTC96 |
 | Elijah Poole | github.com/VengeanceIsHis
