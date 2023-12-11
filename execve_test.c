@@ -4,100 +4,161 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include "shell.h"
 int main(void)
 {
+  int result = 0;
   int i, j;
   size_t buffsize = 1024;
 	char *buffer = (char *)malloc(buffsize * sizeof(char));
-
-	if (buffer == NULL)
+	char **new = NULL;
+	int path_count;
+	char *path = NULL;
+	char **args = NULL;
+	int count;
+	char *token = NULL;
+	  char file_path[1024];
+	  pid_t pid;
+	  int status;
+	  if (buffer == NULL)
 	{
 		perror("Error");
-		exit (1);
+		exit(1);
 	}
 
-	while (!feof(stdin))
+	  while (1)
 	{
-		printf(" $ ");
-		getline(&buffer, &buffsize, stdin);
-
-		//tokenize the input command
-		char **args = (char **)malloc(buffsize * sizeof(char *));
-		if (args == NULL)
-		{
-			perror("Error");
-			exit(1);
-		}
-
-		int count = 0;
-		char *token = strtok(buffer, " \n");
+	  printf("$ ");
+	  fflush(stdout);
+	  if (fgets(buffer, buffsize, stdin) == NULL)
+	    {
+	      break;
+	    }
+	  size_t len = strlen(buffer);
+	  if (len > 0 && buffer[len - 1] == '\n')
+	    {
+	      buffer[len - 1] = '\0';
+	    }
+		count = 0;
+		token = strtok(buffer, " \n");
+		result = 0;
 		while (token != NULL)
 		{
+		  args = realloc(args, (count + 1) * sizeof(char *));
+		  if  (args == NULL)
+		    {
+		      perror("Error");
+		      exit(EXIT_FAILURE);
+		    }
 			args[count] = strdup(token);
 			count++;
 			token = strtok(NULL, " \n");
 		}
-		printf("INPUT:\n");
-		for (i = 0; i < count; i++)
+		if (strcmp(args[0], "env") == 0)
+		  _env();
+		else if (strcmp(args[0], "exit") == 0)
 		  {
-		    printf("%s\n", args[i]);
-		    pid_t pid = fork();
-		    if (pid < 0)
+		    for (i = 0; i < count; i++)
 		      {
-			perror("Fork Failed");
-			exit(1);
+			free(args[i]);
 		      }
-		    else if (pid == 0)
-		      {
-		char* path = getenv("PATH");
-		printf("%s\n", path);
-		char **new = (char **)malloc(buffsize * sizeof(char *));
+		    free(buffer);
+		    free(args);
+		  exit(0);
+		  }
+		else
+		  {
+		path = getenv("PATH");
+		new = (char **)malloc(buffsize * sizeof(char *));
 		if (new == NULL)
 		  {
 		    perror ("Error");
 		    exit(1);
 		  }
-		int path_count = 0;
+		path_count = 0;
 		token = strtok(path, ":");
+		result = 0;
 		while (token != NULL)
 		  {
 		    new[path_count] = strdup(token);
 		    path_count++;
 		    token = strtok(NULL, ":");
 		  }
-		printf("NEW PATH:\n");
-		for (i = 0; i < path_count; i++)
+		    if (access(args[0], X_OK) != -1)
+		      {
+			result = 1;
+			printf("File found\n");
+		      }
+		    else
+		      {
+			memset(file_path, '\0', sizeof(file_path));
+			for (j = 0; j < path_count; j++)
+			  {
+			snprintf(file_path, sizeof(file_path), "%s/%s", new[j], args[0]);
+			if (access(file_path, X_OK) != -1)
+			  {
+			    result = 2;
+			    printf("File found\n");
+			    break;
+			  }
+			  }
+		      }
+		if (result > 0)
 		  {
-		    printf("%s\n", new[i]);
-		    char file_path[1024];
-		snprintf(file_path, sizeof(file_path), "%s/%s", new[i], args[0]);
-		if (access(file_path, F_OK) != -1)
-		  printf("File %s exists!\n", file_path);
-		else
+		    pid = fork();
+		    if (pid == 0)
+		      {
+		    if (result == 1)
+		      {
+			if (execve(args[0], args, new) == -1)
+			{
+			  perror("File unaccessible");
+			  exit(EXIT_FAILURE);
+			}
+		      }
+		    else if (result == 2)
+		      {
+			if (execve(file_path, args, new) == -1)
+			  {
+			    perror("File unaccessible");
+			    exit(EXIT_FAILURE);
+			  }
+		    exit(EXIT_SUCCESS);
+		      }
+		      }
+		    if (pid < 0)
+		      {
+		    perror("Error");
+		    exit(1);
+		      }
+		    else
+		      {
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+			  {
+			    continue;
+			  }
+			else
+			  {
+			    perror("Child process terminated abnormally");
+			    return (-1);
+			  }
+		      }
+		      }
+		if (result == 0)
 		  {
-		    printf("File Does not exist or cannot be accessed");
+		    continue;
 		  }
+	   
 		  }
-	//free allocated memory
+	
 		for (i = 0; i < path_count; i++)
 		  {
 		    free(new[i]);
 		  }
 		free(new);
-		exit(0);
-		      }
-		    else
-		      {
-			int status;
-			waitpid(pid, &status, 0);
-			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			  {
-			    fprintf(stderr, "Child process failed with exit code %d\n", WEXITSTATUS(status));
-			    exit(1);
-			  }
-		      }
-	}
+		
+
 		for (i = 0; i < count; i++)
 		  {
 		    free(args[i]);
@@ -105,5 +166,6 @@ int main(void)
 		free(args);
 	}
 	free(buffer);
-	return 0;
+	exit(0);
+	return (0);
 }
