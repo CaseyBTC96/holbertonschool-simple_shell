@@ -21,7 +21,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 		/* return 1 if the file in the argument refers to the terminal */
 		status_return = isatty(STDIN_FILENO);
 		if (status_return)
-			write(STDOUT_FILENO, "#(ಠ_ಠ)->$ ", 14); /* print the prompt to stdout */
+			write(STDOUT_FILENO, "$$$ ", 5); /* print the prompt to stdout */
 		/* if we recieve Ctrl + c ignore it and print a new line and the prompt */
 		signal(SIGINT, sigintH);
 		/* store the input_stdin string or check for EOF or any error */

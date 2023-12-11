@@ -26,7 +26,7 @@ char **hsh_tokenizer(char *input)
 		position++;
 
 		/* reallocate the array of tokens if necessary*/
-		if (position >= bufffer)
+		if (position >= buffer)
 		{
 			newBuffer = BUFSIZE * 2;
 			backup_tokens = tokens;
