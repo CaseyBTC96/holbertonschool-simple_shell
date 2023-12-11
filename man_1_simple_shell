@@ -1,0 +1,7 @@
+.TH SIMPLE_SHELL 1 "December 06, 2023" "Holberton School" "General Commands Manual"
+
+.SH NAME
+.B $\fr \- A simple command interpreter (simple_shell)
+
+.SH SYNOPSIS
+.B ./

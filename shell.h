@@ -1,8 +1,5 @@
 #ifndef main_h
 #define main_h
-char* find_file(char *pattern, char *directoryPath);
-char* abs_path(char *path, char *file);
-void free_array(char *array);
 /**
  * struct choose_builtin - Builtin commands struct
  * @name_builin: Name of builtin command
@@ -16,10 +13,6 @@ typedef struct choose_builtin
 } choose_builtins_t;
 
 /* built in functions */
-int change_directory(char **args, char *input_stdin, int *exit_status);
-int _setenv(char **args, char *input_stdin, int *exit_status);
-int _unsetenv(char **args, char *input_stdin, int *exit_status);
-int _env(char **args, char *input_stdin, int *exit_status);
-int _exit(char **args, *input_stdin, int *exit_status);
-
+void _env(void);
+int _execute(char *file, char *const args[], char *const env[]);
 #endif 
