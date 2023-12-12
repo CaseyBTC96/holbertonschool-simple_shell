@@ -4,4 +4,12 @@
 .B $\fr \- A simple command interpreter (simple_shell)
 
 .SH SYNOPSIS
-.B ./
+Prompt ($$$) for input.
+.SH DESCRIPTION
+Simple_Shell outputs the prompt ($), this prompt awaits the input from the user. Once inputted. The program reads the string given and looks to reference the first word for commands.
+.SH OPTIONS
+This program does not take any options. The executable commands found in $PATH takes in flags that will change the output based on the individual command.
+.SH RETURN VALUE
+This program returns 0 upon End Of File.
+.SH AUTHORS
+Elijah Poole Casey Paul
