@@ -23,7 +23,7 @@ This table conains a brief description of the working files of the project
 | <pre>[tokenizers.c</pre> | <pre>char **hsh_tokenizer();<br>char **tokenizer_path();</pre> | <pre>Split the input string into a array of tokens.<br>Split the environment variable PATH into an array of tokens.</pre> |
 | <pre>[validators.c]</pre> | <pre>char *validate_input();<br>int validate_spaces();</pre> | <pre>alidate if PATH exists<br>Validate spaces, tabs and line breaks.</pre> |
 | <pre>[executors.c]</pre> | <pre>int hsh_execute();<br>int hsh_execute_builtins();</pre> | <pre>Fork process and replace the child with a new program.<br>Choose from an array of builtin functions.</pre> |
-| <pre>[builtin_functions.c]</pre> | <pre>int hsh_cd();<br>int hsh_setenv();<br>int hsh_unsetenv();<br>int hsh_env();<br>int hsh_exit();</pre> | <pre>Change directory.<br>Change or add and environment variable.<br>Delete an environment variable from the environment.<br>Print the environment variables list.<br>Terminate the main loop and exit the shell.</pre> |
+| <pre>[builtin_functions.c]</pre> | <pre>int hsh_exit();</pre> | <pre>Print the environment variables list.<br>Terminate the main loop and exit the shell.</pre> |
 | <pre>[helper_functions.c]</pre> | <pre>void sigintH();<br>char *str_concat();<br>void *_realloc();</pre> | <pre>Handles SIGINT (CTRL + C).<br>Concatenate two strings.<br>Reallocate a memory block.</pre> |
 
 ## System and Library calls
