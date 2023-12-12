@@ -66,7 +66,7 @@ int hsh_execute_builtins(char **args, char *input_stdin,
 
 	/* builtin functions array of type 'structure choose_builtin' (see main.h) */
 	choose_builtins_t options[] = {
-		{"Exit", hsh_exit},
+		{"exit", hsh_exit},
 		{"env", hsh_env},
 		{NULL, NULL}
 	};
