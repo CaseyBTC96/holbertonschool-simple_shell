@@ -4,4 +4,7 @@
 .B $\fr \- A simple command interpreter (simple_shell)
 
 .SH SYNOPSIS
+Prompt ($$$) for input.
+.SH DESCRIPTION
+This 
 .B ./
