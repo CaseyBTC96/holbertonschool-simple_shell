@@ -4,7 +4,7 @@
 .B $\fr \- A simple command interpreter (simple_shell)
 
 .SH SYNOPSIS
-Prompt ($$$) for input.
+Prompt ($$$) for input. int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 .SH DESCRIPTION
 Simple_Shell outputs the prompt ($), this prompt awaits the input from the user. Once inputted. The program reads the string given and looks to reference the first word for commands.
 .SH OPTIONS
