@@ -9,7 +9,7 @@ void sigintH(int signum)
 {
 	if (signum == SIGINT)
 	{
-		write(2, "\n#(ಠ_ಠ)->$ ", 14);
+		write(2, "\n$$$ ", 5);
 	}
 }
 
